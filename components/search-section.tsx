@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { Search } from "lucide-react"
+import { Search, ChevronLeft, ChevronRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -17,6 +17,7 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const popularStocksRef = useRef<HTMLDivElement>(null)
 
   const popularStocks = [
     { symbol: "AAPL", name: "Apple" },
@@ -27,6 +28,10 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
     { symbol: "META", name: "Meta" },
     { symbol: "NFLX", name: "Netflix" },
     { symbol: "NVDA", name: "NVIDIA" },
+    { symbol: "JPM", name: "JPMorgan" },
+    { symbol: "V", name: "Visa" },
+    { symbol: "WMT", name: "Walmart" },
+    { symbol: "DIS", name: "Disney" },
   ]
 
   const allStocks = [
@@ -58,6 +63,18 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
 
     setSuggestions(filtered)
   }, [searchTerm])
+
+  const scrollLeft = () => {
+    if (popularStocksRef.current) {
+      popularStocksRef.current.scrollBy({ left: -200, behavior: "smooth" })
+    }
+  }
+
+  const scrollRight = () => {
+    if (popularStocksRef.current) {
+      popularStocksRef.current.scrollBy({ left: 200, behavior: "smooth" })
+    }
+  }
 
   const handleSearch = () => {
     if (searchTerm) {
@@ -128,21 +145,61 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
             )}
           </div>
 
-          <div className="mt-6">
-            <p className="text-sm text-slate-500 mb-3">Popular stocks:</p>
-            <div className="flex flex-wrap gap-2">
-              {popularStocks.map((stock) => (
-                <Badge
-                  key={stock.symbol}
+          {searchTerm.trim() === "" && (
+            <div className="mt-6">
+              <p className="text-sm text-slate-500 mb-3 text-center">Popular stocks:</p>
+              <div className="relative">
+                <Button
                   variant="outline"
-                  className="px-3 py-1 cursor-pointer hover:bg-slate-100 border-slate-300"
-                  onClick={() => handleChipClick(stock.symbol, stock.name)}
+                  size="icon"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md border-slate-200"
+                  onClick={scrollLeft}
                 >
-                  {stock.symbol}
-                </Badge>
-              ))}
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+
+                <div className="mx-10 overflow-hidden">
+                  <div
+                    ref={popularStocksRef}
+                    className="flex overflow-x-auto py-2 px-4 scrollbar-hide"
+                    style={{
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                      paddingLeft: "12px", // Add padding to the start
+                      paddingRight: "12px", // Add padding to the end
+                    }}
+                  >
+                    <div className="flex space-x-3">
+                      {popularStocks.map((stock) => (
+                        <Badge
+                          key={stock.symbol}
+                          variant="outline"
+                          className="px-4 py-2 text-base cursor-pointer hover:bg-emerald-100 hover:text-emerald-800 hover:border-emerald-300 transition-all duration-200 border-slate-300 whitespace-nowrap"
+                          onClick={() => handleChipClick(stock.symbol, stock.name)}
+                        >
+                          {stock.symbol}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md border-slate-200"
+                  onClick={scrollRight}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+              <style jsx global>{`
+                .scrollbar-hide::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
