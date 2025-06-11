@@ -23,13 +23,13 @@ export function HeroSection() {
     >
       <div className="container px-4 md:px-6 mx-auto flex flex-col items-center text-center">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4 text-white">
-          Predict the Future of Stocks with ML
+          Predict the Future of Stocks with AI
         </h1>
         <p className="max-w-[700px] text-lg md:text-xl text-slate-300 mb-8">
-          Harness the power of Machine Learning to make smarter investment decisions. Our advanced algorithms
+          Harness the power of artificial intelligence to make smarter investment decisions. Our advanced algorithms
           analyze market trends to provide accurate stock predictions.
         </p>
-      </div>s
+      </div>
       <div className="absolute bottom-16">
         <Button onClick={scrollToSearch} size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white">
           Get Started

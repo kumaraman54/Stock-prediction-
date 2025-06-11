@@ -3,16 +3,17 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { Search, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 interface SearchSectionProps {
   onSearch: (symbol: string) => void
+  loading?: boolean
 }
 
-export function SearchSection({ onSearch }: SearchSectionProps) {
+export function SearchSection({ onSearch, loading = false }: SearchSectionProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -32,11 +33,13 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
     { symbol: "V", name: "Visa" },
     { symbol: "WMT", name: "Walmart" },
     { symbol: "DIS", name: "Disney" },
+    { symbol: "HDB", name: "HDFC Bank" },
   ]
 
   const allStocks = [
     { symbol: "AAPL", name: "Apple Inc." },
     { symbol: "GOOG", name: "Alphabet Inc." },
+    { symbol: "GOOGL", name: "Alphabet Inc." },
     { symbol: "TSLA", name: "Tesla, Inc." },
     { symbol: "MSFT", name: "Microsoft Corporation" },
     { symbol: "AMZN", name: "Amazon.com, Inc." },
@@ -47,6 +50,7 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
     { symbol: "V", name: "Visa Inc." },
     { symbol: "WMT", name: "Walmart Inc." },
     { symbol: "DIS", name: "The Walt Disney Company" },
+    { symbol: "HDB", name: "HDFC Bank Limited" },
   ]
 
   useEffect(() => {
@@ -77,7 +81,7 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
   }
 
   const handleSearch = () => {
-    if (searchTerm) {
+    if (searchTerm && !loading) {
       // Extract symbol if in format "SYMBOL - Company Name"
       const symbol = searchTerm.split(" - ")[0].trim().toUpperCase()
       onSearch(symbol)
@@ -86,7 +90,7 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !loading) {
       handleSearch()
     }
   }
@@ -94,13 +98,17 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
   const handleSuggestionClick = (suggestion: string) => {
     const symbol = suggestion.split(" - ")[0].trim()
     setSearchTerm(suggestion)
-    onSearch(symbol)
+    if (!loading) {
+      onSearch(symbol)
+    }
     setShowSuggestions(false)
   }
 
   const handleChipClick = (symbol: string, name: string) => {
     setSearchTerm(`${symbol} - ${name}`)
-    onSearch(symbol)
+    if (!loading) {
+      onSearch(symbol)
+    }
   }
 
   return (
@@ -123,14 +131,19 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
                 onKeyDown={handleKeyDown}
                 onFocus={() => setShowSuggestions(true)}
                 className="flex-1 border-2 border-r-0 rounded-r-none h-12 text-lg"
+                disabled={loading}
               />
-              <Button onClick={handleSearch} className="h-12 rounded-l-none bg-emerald-600 hover:bg-emerald-700">
-                <Search className="h-5 w-5" />
-                <span className="ml-2">Search</span>
+              <Button
+                onClick={handleSearch}
+                className="h-12 rounded-l-none bg-emerald-600 hover:bg-emerald-700"
+                disabled={loading}
+              >
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Search className="h-5 w-5" />}
+                <span className="ml-2">{loading ? "Searching..." : "Search"}</span>
               </Button>
             </div>
 
-            {showSuggestions && suggestions.length > 0 && (
+            {showSuggestions && suggestions.length > 0 && !loading && (
               <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-b-md shadow-lg mt-1">
                 {suggestions.map((suggestion, index) => (
                   <div
@@ -145,7 +158,7 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
             )}
           </div>
 
-          {searchTerm.trim() === "" && (
+          {searchTerm.trim() === "" && !loading && (
             <div className="mt-6">
               <p className="text-sm text-slate-500 mb-3 text-center">Popular stocks:</p>
               <div className="relative">
@@ -165,8 +178,8 @@ export function SearchSection({ onSearch }: SearchSectionProps) {
                     style={{
                       scrollbarWidth: "none",
                       msOverflowStyle: "none",
-                      paddingLeft: "12px", // Add padding to the start
-                      paddingRight: "12px", // Add padding to the end
+                      paddingLeft: "12px",
+                      paddingRight: "12px",
                     }}
                   >
                     <div className="flex space-x-3">
