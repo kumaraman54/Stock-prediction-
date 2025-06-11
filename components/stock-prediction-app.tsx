@@ -44,11 +44,8 @@ export function StockPredictionApp() {
 
     try {
       // Try to fetch from backend
-      const response = await axios.get(`http://localhost:5000/predict`, {
-        params: {
-          ticker: symbol,
-        },
-      })
+      const response = await axios.get(`http://localhost:5000/predict?ticker=${symbol}`)
+      
 
       const stockData: StockData = response.data
 
