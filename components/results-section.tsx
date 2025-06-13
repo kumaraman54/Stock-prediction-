@@ -165,7 +165,7 @@ function StockDetailsCard({ stockData }: StockCardProps) {
               <BarChart3 className="h-5 w-5 text-slate-500 mr-2" />
               <span className="text-base font-medium">Current Price</span>
             </div>
-            <span className="text-xl font-bold">${stockData.current_price.toFixed(2)}</span>
+            <span className="text-xl font-bold">Rs{stockData.current_price.toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between items-center py-2 border-b">
@@ -177,26 +177,17 @@ function StockDetailsCard({ stockData }: StockCardProps) {
               )}
               <span className="text-base font-medium">Predicted Price</span>
             </div>
-            <span className="text-xl font-bold">${stockData.best_price_pred.toFixed(2)}</span>
+            <span className="text-xl font-bold">Rs{stockData.best_price_pred.toFixed(2)}</span>
           </div>
 
+          {/* Present Date */}
           <div className="flex justify-between items-center py-2 border-b">
             <div className="flex items-center">
-              <Percent className="h-5 w-5 text-slate-500 mr-2" />
-              <span className="text-base font-medium">Expected Change</span>
+              <span className="text-base font-medium">Date</span>
             </div>
-            <span className={`text-xl font-bold ${isPriceUp ? "text-emerald-600" : "text-red-600"}`}>
-              {isPriceUp ? "+" : ""}
-              {percentChange.toFixed(2)}%
+            <span className="text-xl font-bold text-slate-700">
+                  {new Date().toLocaleDateString()}
             </span>
-          </div>
-
-          <div className="flex justify-between items-center py-2 border-b">
-            <div className="flex items-center">
-              <Calendar className="h-5 w-5 text-slate-500 mr-2" />
-              <span className="text-base font-medium">Model Used</span>
-            </div>
-            <span className="text-base font-medium">{stockData.best_model}</span>
           </div>
 
           <div className="mt-4 pt-2">
@@ -227,13 +218,6 @@ function StockDetailsCard({ stockData }: StockCardProps) {
               ></div>
             </div>
           </div>
-
-          <div className="mt-4 pt-2 border-t">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Model RMSE</span>
-              <span className="text-sm text-slate-600">{stockData.best_rmse.toFixed(4)}</span>
-            </div>
-          </div>
         </div>
       </CardContent>
     </Card>
@@ -248,9 +232,9 @@ function PredictionChart({ stockData }: StockCardProps) {
     <Card className="shadow-lg h-full">
       <CardHeader>
         <CardTitle>AI Prediction Chart</CardTitle>
-        <CardDescription>
+        {/* <CardDescription>
           Historical data and prediction for {stockData.ticker} using {stockData.best_model}
-        </CardDescription>
+        </CardDescription> */}
       </CardHeader>
       <CardContent>
         <div className="w-full h-[400px] flex items-center justify-center">
