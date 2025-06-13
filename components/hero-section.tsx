@@ -16,7 +16,7 @@ export function HeroSection() {
       className="w-full h-screen flex items-center justify-center relative"
       style={{
         backgroundImage:
-          "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/placeholder.svg?height=1080&width=1920')",
+          "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/image.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
