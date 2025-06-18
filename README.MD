@@ -53,7 +53,7 @@ This repository contains the frontend of the **Stock Price Prediction System**, 
 ## 📌 Notes
 
 - Make sure the backend is running on `http://localhost:5000` to fetch predictions.
-- Designed to work seamlessly with [SPPB Backend](https://github.com/DhirajAgarwa/SPPB).
+- Designed to work seamlessly with Backend
 - For best performance, ensure CORS is properly configured in Flask backend.
 
 ---
