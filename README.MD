@@ -59,8 +59,8 @@ This repository contains the frontend of the **Stock Price Prediction System**, 
 ---
 
 
-## 📄 License
+<!-- ## 📄 License
 
 This project is intended for academic and educational use. Contributions and forks are welcome!
 
----
+--- -->
